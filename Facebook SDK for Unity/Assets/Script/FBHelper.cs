@@ -2,8 +2,11 @@
 using System.Collections;
 using Facebook.Unity;
 using System.Collections.Generic;
+using UnityEngine.UI;
+
 public class FBHelper : MonoBehaviour {
 
+    public Text usernameText;
     void Awake() {
         FB.Init(SetInit, OnhideUnity);
     }
@@ -46,6 +49,20 @@ public class FBHelper : MonoBehaviour {
             else {
                 Debug.Log("FB is not logged in");
             }
+        }
+    }
+
+    public void getUserName() {
+        FB.API("/me?fields=first_name", HttpMethod.GET, DisplayUsername);
+    }
+
+    void DisplayUsername( IResult result) {
+        if (result.Error != null)
+        {
+            Debug.Log(result.Error);
+        }
+        else {
+            usernameText.text = "Hi there" + result.ResultDictionary["first_name"];
         }
     }
 }
